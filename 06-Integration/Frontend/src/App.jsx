@@ -13,7 +13,7 @@ const App = () => {
   const [editingId, setEditingId] = useState(null);
 
   function fetchNotes() {
-    axios.get("http://localhost:3000/notes").then((response) => {
+    axios.get("/notes").then((response) => {
       setNotes(response.data.notes);
     });
   };
@@ -36,14 +36,14 @@ const App = () => {
     e.preventDefault();
     if (editingId) {
       axios
-        .put(`http://localhost:3000/notes/${editingId}`, formData)
+        .put(`/notes/${editingId}`, formData)
         .then(() => {
           fetchNotes();
           resetForm();
         });
     } else {
       axios
-        .post("http://localhost:3000/notes", formData)
+        .post("/notes", formData)
         .then(() => {
           fetchNotes();
           resetForm();
@@ -53,7 +53,7 @@ const App = () => {
   };
 
   function deleteNote(id) {
-    axios.delete(`http://localhost:3000/notes/${id}`).then(() => {
+    axios.delete(`/notes/${id}`).then(() => {
       fetchNotes();
     });
   }

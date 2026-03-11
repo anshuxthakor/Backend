@@ -2,10 +2,12 @@
 const express = require('express');
 const noteModel = require('../src/models/notes.model');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('./public'));
 
 app.get('/notes', async(req, res) => {
     const notes = await noteModel.find();
@@ -38,6 +40,10 @@ app.delete('/notes/:id', async (req, res) => {
         message: 'Note deleted successfully',
         note: note
     });
+});
+
+app.use('*name', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '/public/index.html'));
 });
 
 module.exports = app;

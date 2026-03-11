@@ -743,3 +743,350 @@ The frontend and backend communicate through **HTTP APIs**, while MongoDB stores
 
 ---
 
+# 22. Serving Frontend from Backend (Production Build)
+
+When deploying a **full-stack application**, the frontend and backend are usually served from the **same server**.
+
+Instead of running:
+
+```
+Frontend → localhost:5173
+Backend → localhost:3000
+```
+
+we build the frontend and let **Express serve the static files**.
+
+---
+
+# 22.1 Build the React Application
+
+Inside the **frontend folder**, run:
+
+```
+npm run build
+```
+
+This command creates a **production build**.
+
+A new folder appears:
+
+```
+dist/
+```
+
+Structure:
+
+```
+dist
+│
+├── index.html
+├── notes.svg
+└── assets
+    ├── index-xxxxx.js
+    └── index-xxxxx.css
+```
+
+These are **optimized static files** ready for deployment.
+
+---
+
+# 22.2 Move Build Files to Backend
+
+Create a **public folder inside backend**.
+
+```
+backend
+│
+├── public
+│   ├── index.html
+│   ├── notes.svg
+│   └── assets
+│
+└── src
+```
+
+Then copy everything from **dist → public**.
+
+Final structure:
+
+```
+backend
+│
+├── public
+│   ├── index.html
+│   ├── notes.svg
+│   └── assets
+│
+├── src
+│   ├── config
+│   ├── models
+│   └── app.js
+│
+└── server.js
+```
+
+Now the backend can serve the frontend files.
+
+---
+
+# 22.3 Serve Static Files in Express
+
+Inside:
+
+```
+src/app.js
+```
+
+Import the **path module**.
+
+```js
+const path = require('path');
+```
+
+Then add a middleware to serve static files.
+
+```js
+app.use(express.static('./public'));
+```
+
+This tells Express:
+
+```
+Serve files from the public folder
+```
+
+Example:
+
+```
+/assets/index.js
+/assets/index.css
+```
+
+---
+
+# 22.4 Handle React Routing
+
+React uses **client-side routing**.
+
+If the user opens:
+
+```
+/notes
+/profile
+/dashboard
+```
+
+Express might return **404**.
+
+To fix this, we send `index.html` for all unknown routes.
+
+Add this **at the end of app.js**:
+
+```js
+app.use('*', (req, res) => {
+    res.sendFile(
+        path.join(__dirname, '..', 'public', 'index.html')
+    );
+});
+```
+
+Explanation:
+
+```
+Any unmatched route → return index.html
+```
+
+Then React handles the route internally.
+
+---
+
+# 22.5 Running the Full Application
+
+Start the backend server:
+
+```
+node server.js
+```
+
+Now open:
+
+```
+http://localhost:3000
+```
+
+Both **frontend and backend run on the same port**.
+
+Architecture now becomes:
+
+```
+Browser
+   ↓
+Express Server (3000)
+   ↓
+React Static Files + API Routes
+   ↓
+MongoDB
+```
+
+No separate frontend server is required.
+
+---
+
+# 23. Deploying the Application on Render
+
+Render allows hosting **Node.js applications with MongoDB connections**.
+
+---
+
+# 23.1 Push Code to GitHub
+
+First push the project to GitHub.
+
+Example structure:
+
+```
+notes-app
+│
+├── backend
+│
+├── frontend
+│
+└── README.md
+```
+
+Commit and push:
+
+```
+git init
+git add .
+git commit -m "initial commit"
+git branch -M main
+git remote add origin <repo-url>
+git push -u origin main
+```
+
+---
+
+# 23.2 Create Web Service on Render
+
+Go to:
+
+```
+https://render.com
+```
+
+Steps:
+
+1. Login with GitHub
+2. Click **New**
+3. Select **Web Service**
+4. Choose your repository
+
+---
+
+# 23.3 Configure Render
+
+Fill these settings.
+
+### Runtime
+
+```
+Node
+```
+
+### Build Command
+
+```
+npm install
+```
+
+### Start Command
+
+```
+node backend/server.js
+```
+
+Or if backend is root:
+
+```
+node server.js
+```
+
+---
+
+# 23.4 Add Environment Variables
+
+In Render dashboard:
+
+```
+Environment → Add Variable
+```
+
+Example:
+
+```
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/notesdb
+PORT=3000
+```
+
+---
+
+# 23.5 Deploy
+
+Click:
+
+```
+Deploy Web Service
+```
+
+Render will:
+
+```
+Install dependencies
+Build project
+Start Node server
+```
+
+After deployment you get a URL:
+
+```
+https://notes-app.onrender.com
+```
+
+Opening this URL will load:
+
+```
+React frontend
++
+Express backend
++
+MongoDB database
+```
+
+---
+
+# 24. Final Production Architecture
+
+```
+User Browser
+      ↓
+Render Server
+      ↓
+Express + Node.js
+      ↓
+React Static Files (public folder)
+      ↓
+API Routes (/notes)
+      ↓
+MongoDB Atlas
+```
+
+This setup ensures:
+
+* One server
+* One domain
+* Full MERN stack deployment
+
+---
+
+

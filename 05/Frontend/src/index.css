@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+* {
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue Light';
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background: #1B1E20;
+}

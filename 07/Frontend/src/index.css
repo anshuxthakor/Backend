@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue Light';
+  font-weight: 500;
+  color: white;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: #1B1E20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.inp {
+  width: 40vh;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+}
+
+.btn {
+  width: 40vh;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.inpfile {
+  width: 40vh;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.inpfile::file-selector-button {
+  padding: 8px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.inpfile::file-selector-button:active {
+  transform: scale(0.95);
+}

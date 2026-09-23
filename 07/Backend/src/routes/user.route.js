@@ -3,6 +3,6 @@ const userRouter = require('express').Router();
 const { createController } = require('../controllers/user.controller');
 const upload = require('../config/multer.config');
 
-userRouter.post('/upload', upload.single('profile'), createController)
+userRouter.post('/upload', upload.array('images'), createController)
 
 module.exports = userRouter;

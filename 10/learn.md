@@ -1,6 +1,6 @@
 # Authentication with Express, MongoDB, bcrypt, and JWT
 
-This guide explains how to build a small authentication system with the technologies used in this project:
+This guide explains how to build a small authentication system
 
 - **Node.js and Express** for the HTTP server and API routes
 - **MongoDB and Mongoose** for storing user records

@@ -3,7 +3,7 @@
 This guide explains how to build a small authentication system
 
 - **Node.js and Express** for the HTTP server and API routes
-- **MongoDB and Mongoose** for storing user records and it's package for mapping JavaScript objects to MongoDB documents
+- **MongoDB and Mongoose** for storing user records
 - **bcrypt** for securely hashing passwords
 - **JSON Web Tokens (JWTs)** for authenticating later requests
 - **dotenv** for loading configuration and secrets from environment variables
